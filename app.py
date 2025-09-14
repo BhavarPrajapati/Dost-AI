@@ -1,10 +1,12 @@
 from flask import Flask, render_template, jsonify, request
 import google.generativeai as genai
 from PIL import Image
+import os 
 
 app = Flask(__name__)
 
-genai.configure(api_key="AIzaSyBsE2N5HICzt1LM0O3dEn2zS328WrEIGww")
+api_key = os.environ.get("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
 
 @app.route("/", methods=["GET"])
 def home():
@@ -114,4 +116,5 @@ def project_ideas_web():
         return jsonify({"ideas": response.text})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000)) 
+    app.run(host="0.0.0.0", port=port)
