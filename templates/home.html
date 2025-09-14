@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Dost AI</title>
+<link rel="icon" type="image/png" href="/static/dostailogo.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 60%,rgba(0,0,0,0.7) 40%), url("/static/BG.ai");
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Navbar & Responsive Navbar */
+.navbar {
+    width: 100vw;
+    background: rgba(10,10,20,0.97);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.navbar-inner {
+    width: 1200px;
+    max-width: 95vw;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+.icon { display: flex; align-items: center; }
+.logo {
+    color: #ff7200;
+    font-size: 27px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.menu-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+.menu ul {
+    display: flex;
+    gap: 50px;
+    margin: 0;
+    padding: 0;
+}
+.menu ul li { list-style: none; font-size: 15px; }
+.menu ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.menu ul li a:hover { color: #ff7200; }
+.search { width: 330px; display: flex; align-items: center; }
+.srch {
+    width: 200px; height: 40px;
+    background: transparent;
+    border: 1px solid #ff7200;
+    color: #fff;
+    border-right: none;
+    font-size: 16px;
+    padding: 10px;
+}
+.btn {
+    width: 100px; height: 40px;
+    background: #ff7200;
+    border: 2px solid #ff7200;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+.menu-toggle {
+    display: none;
+    font-size: 28px;
+    color: #ff7200;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+@media (max-width: 768px) {
+    .menu-toggle { display: block; }
+    .menu-search-wrap {
+        position: fixed;
+        top: 0; right: -100%;
+        width: 75%; height: 100vh;
+        background: #111;
+        transition: right 0.4s ease-in-out;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 70px;
+        gap: 30px;
+        z-index: 1000;
+    }
+    .menu-search-wrap.active { right: 0; }
+    .menu ul { flex-direction: column; gap: 25px; padding: 0 20px; }
+    .search { display: none !important; }
+}
+
+/* Intro */
+.main-section {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 30px;
+}
+.intro h1 {
+    font-size: 42px;
+    color: #ff7200;
+    margin-bottom: 20px;
+}
+.intro p { font-size: 20px; line-height: 1.8; margin: 12px 0; }
+.main-btn {
+    background: #ff7200;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50px;
+    padding: 15px 40px;
+    margin-top: 25px;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+}
+.main-btn:hover { background: linear-gradient(135deg, #fff, #ff7200); }
+
+/* Story Box */
+.story-box {
+    margin-top: 25px;
+    background: rgba(255,255,255,0.08);
+    padding: 25px;
+    border-radius: 15px;
+    display: none;
+}
+.story-box h3 { color: #ff7200; margin-bottom: 15px; }
+.story-box textarea {
+    width: 100%; height: 200px;
+    background: rgba(0,0,0,0.6);
+    border: 2px solid #ff7200;
+    border-radius: 10px;
+    padding: 14px; color: #fff;
+    font-size: 16px; resize: none;
+}
+
+/* Inspiration Heading */
+.section-heading {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #ff7200;
+    margin-top: 60px;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* --- SLIDER STYLES --- */
+.slider {
+    width: 100vw;
+    max-width: 1200px;
+    margin: 20px auto 60px auto;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(255,114,0,0.25);
+}
+.slides {
+    display: flex;
+    transition: transform 1s cubic-bezier(0.6,0,0.3,1);
+    width: 100%;
+}
+.post {
+    flex: 0 0 100vw;
+    max-width: 100vw;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(255,114,0,0.15), rgba(255,255,255,0.05));
+    padding: 30px;
+}
+.post img {
+    width: 220px; height: 220px;
+    border-radius: 12px;
+    margin-right: 30px;
+    object-fit: cover;
+    border: 2px solid #ff7200;
+}
+.post h4 { color: #ff7200; font-size: 24px; margin-bottom: 12px; }
+.post p { font-size: 17px; line-height: 1.6; color: #ddd; word-break: break-word; }
+@media (max-width: 768px) {
+    .slider { max-width: 100vw; margin: 12px 0 36px 0; border-radius: 8px;}
+    .slides { width: 100vw;}
+    .post {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        max-width: 100vw;
+        min-width: 100vw;
+        padding: 16px 8px;
+        box-sizing: border-box;
+    }
+    .post img {
+        margin: 0 0 14px 0;
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+    }
+    .post h4 { font-size: 18px; margin-bottom: 6px;}
+    .post p { font-size: 14.5px; line-height: 1.35; color: #eee; padding: 0 3px;}
+}
+</style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="icon"><h2 class="logo">Dost AI</h2></div>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <div class="menu-search-wrap" id="mobileMenu">
+                <div class="menu">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/product-upload">Product Upload</a></li>
+                        <li><a href="/project-ideas">Project Ideas</a></li>
+                        <li><a href="/product-sell">Product Sell</a></li>
+                        <li><a href="/competition">Competition</a></li>
+                    </ul>
+                </div>
+                <div class="search">
+                    <input class="srch" type="search" placeholder="Type to text">
+                    <button class="btn">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Intro -->
+    <div class="main-section">
+        <div class="intro">
+            <h1>Welcome to Dost AI✨</h1>
+            <p>Dost! You can generate post on our platform related to your</p>
+            <p>work and generate ideas related to it and sell your</p>
+            <p>and participate in different competitions.</p>
+            <p>Dost! here you can show your life story of struggle and</p>
+            <p>hard work to the world.</p>
+            <button class="main-btn" onclick="showStory()">Start Writing</button>
+        </div>
+
+        <!-- Story Box -->
+        <div class="story-box" id="storyBox">
+            <h3>✍️ Write Your Story</h3>
+            <textarea id="storyText" placeholder="Begin your story here..."></textarea>
+            <button class="main-btn" onclick="redirectToWiki()">Share Globally</button>
+        </div>
+    </div>
+
+    <!-- Inspiration Stories -->
+    <h2 class="section-heading">✨ Inspiration Stories ✨</h2>
+    <div class="slider">
+        <div class="slides" id="slides">
+            <div class="post" onclick="window.open('https://en.wikipedia.org/wiki/Leonardo_da_Vinci','_blank')">
+                <img src="/static/dostai1.jpeg" alt="Artist">
+                <div>
+                    <h4>Leonardo da Vinci</h4>
+                    <p>Leonardo da Vinci (1452–1519), born in Vinci, Italy,was a Renaissance artist, inventor</p>
+                    <p>and scientist.Famous for Mona Lisa and The Last Supper, he also designed flying</p>
+                    <p>machines and studied anatomy. Known for endless curiosity, he worked  </p>
+                    <p>across Italy and France, leaving a timeless legacy of art and innovation.</p>
+                </div>
+            </div>
+            <div class="post" onclick="window.open('https://en.wikipedia.org/wiki/Handicraft','_blank')">
+                <img src="/static/dostai2.jpg" alt="Craft">
+                <div>
+                    <h4>Thomas Dambo</h4>
+                    <p>Thomas Dambo is a Danish “recycle artist” famous for creating large sculptures—especially</p>
+                    <p>trolls—from reclaimed and recycled materials. His art merges folklore, environmental</p>
+                    <p>awareness, and community participation. Dambo builds hidden installations around</p>
+                    <p>the world that invite people to explore nature, rethink waste, and find beauty in</p>
+                    <p>what others discard.</p>
+                </div>
+            </div>
+            <div class="post" onclick="window.open('https://en.wikipedia.org/wiki/Mahatma_Gandhi','_blank')">
+                <img src="/static/dostai3.avif" alt="Leader">
+                <div>
+                    <h4>Mahatma Gandhi</h4>
+                    <p>Mahatma Gandhi (Mohandas Karamchand Gandhi), leader of India’s freedom struggle,</p>
+                    <p>promoted khadi and “Made in India” clothes through the Swadeshi movement. He </p>
+                    <p>urged people to boycott British textiles and spin their own cloth. His principles</p>
+                    <p>of nonviolence, truth, and simplicity inspired millions, shaping India’s independence</p>
+                    <p>and leaving a global legacy.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+function showStory() {
+    document.getElementById("storyBox").style.display = "block";
+}
+function redirectToWiki() {
+    let story = document.getElementById("storyText").value;
+    if(story.trim() !== "") {
+        navigator.clipboard.writeText(story).then(() => {
+            window.open("https://en.wikipedia.org/wiki/Wikipedia:Your_first_article", "_blank");
+        });
+    } else {
+        window.open("https://en.wikipedia.org/wiki/Wikipedia:Your_first_article", "_blank");
+    }
+}
+
+// Auto Slide - Responsive fix
+let index = 0;
+const slides = document.getElementById("slides");
+const posts = document.querySelectorAll(".post");
+function goToSlide(i) {
+    slides.style.transform = `translateX(${-i * 100}vw)`;
+}
+setInterval(() => {
+    index = (index + 1) % posts.length;
+    goToSlide(index);
+}, 7000); // 7 seconds
+
+window.addEventListener('resize', () => {
+    goToSlide(index);
+});
+
+// Toggle menu
+function toggleMenu() {
+    document.getElementById("mobileMenu").classList.toggle("active");
+}
+document.addEventListener("click", function(event) {
+    const menu = document.getElementById("mobileMenu");
+    const toggle = document.querySelector(".menu-toggle");
+    if (menu.classList.contains("active") && !menu.contains(event.target) && !toggle.contains(event.target)) {
+        menu.classList.remove("active");
+    }
+});
+</script>
+</body>
+</html>
